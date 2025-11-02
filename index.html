@@ -88,12 +88,14 @@ function addMessage(text,sender,save=true){
   div.textContent=text;
   chatPanel.appendChild(div); chatPanel.scrollTop=chatPanel.scrollHeight;
 
-  if(sender==="bot" && 'speechSynthesis' in window){
-    lastBotText=text;
-    const utterance=new SpeechSynthesisUtterance(text);
-    utterance.lang="tr-TR";
-    window.speechSynthesis.speak(utterance);
-  }
+let autoSpeak = false; // Başlangıçta kapalı
+
+if(sender==="bot" && autoSpeak && 'speechSynthesis' in window){
+  lastBotText=text;
+  const utterance=new SpeechSynthesisUtterance(text);
+  utterance.lang="tr-TR";
+  window.speechSynthesis.speak(utterance);
+}
 
   if(save){ messages.push({role:sender,text}); saveMessages(); addHistory(text,sender); }
 }
